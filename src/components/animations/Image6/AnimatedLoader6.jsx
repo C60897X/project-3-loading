@@ -126,3 +126,4 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
     </div>
   )
 }
+ 
