@@ -11,6 +11,13 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
   const [cursorPos, setCursorPos] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
   const animationInterval = useRef(null)
   const stopTimeout = useRef(null)
+  const soundRef = useRef(null)
+
+  // 初始化音效
+  useEffect(() => {
+    soundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/sound6.wav`)
+    soundRef.current.loop = true
+  }, [])
 
   // 监听鼠标移动
   useEffect(() => {
@@ -24,9 +31,10 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // 控制逐帧动画
+  // 控制逐帧动画和音效播放
   useEffect(() => {
     if (isMoving && frameIndex < frameCount - 1 && !showFinal) {
+      soundRef.current?.play().catch(() => {})
       if (!animationInterval.current) {
         animationInterval.current = setInterval(() => {
           setFrameIndex((prev) => {
@@ -40,6 +48,11 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
     } else {
       clearInterval(animationInterval.current)
       animationInterval.current = null
+      soundRef.current?.pause()
+    }
+    return () => {
+      clearInterval(animationInterval.current)
+      soundRef.current?.pause()
     }
   }, [isMoving, frameIndex, showFinal])
 
@@ -47,6 +60,7 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
   useEffect(() => {
     if (frameIndex === frameCount - 1 && !showFinal) {
       setHideUI(true)
+      soundRef.current?.pause()
       setTimeout(() => {
         setShowFinal(true)
         if (onFinish) onFinish()
@@ -56,7 +70,6 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
 
   return (
     <div className="animation-container" style={{ cursor: 'none' }}>
-      {/* 当前帧图像 */}
       {!showFinal && (
         <img
           src={`${import.meta.env.BASE_URL}images/6/${frameIndex + 1}.jpg`}
@@ -70,7 +83,6 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
         />
       )}
 
-      {/* 自定义鼠标、提示、ring */}
       {!showFinal && (
         <>
           <img
@@ -107,7 +119,6 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
         </>
       )}
 
-      {/* 猫图淡入 */}
       {showFinal && (
         <img
           src={finalImage}

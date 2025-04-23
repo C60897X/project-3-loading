@@ -13,7 +13,15 @@ export default function AnimatedLoader3({ finalImage, onFinish }) {
   const leftZoneRef = useRef(null)
   const rightZoneRef = useRef(null)
 
+  const soundLeftRef = useRef(null)
+  const soundRightRef = useRef(null)
+
   const [dragging, setDragging] = useState(null)
+
+  useEffect(() => {
+    soundLeftRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/sound3_left.mp3`)
+    soundRightRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/sound3_right.mp3`)
+  }, [])
 
   useEffect(() => {
     if (leftLocked && rightLocked) {
@@ -61,6 +69,7 @@ export default function AnimatedLoader3({ finalImage, onFinish }) {
     const zoneRef = dragging.side === 'left' ? leftZoneRef : rightZoneRef
     const lockSetter = dragging.side === 'left' ? setLeftLocked : setRightLocked
     const ringReset = dragging.side === 'left' ? setShowLeftRing : setShowRightRing
+    const soundToPlay = dragging.side === 'left' ? soundLeftRef.current : soundRightRef.current
 
     const el = ref.current
     const zone = zoneRef.current
@@ -84,6 +93,7 @@ export default function AnimatedLoader3({ finalImage, onFinish }) {
       el.classList.add('locked')
       lockSetter(true)
       ringReset(false)
+      soundToPlay?.play().catch(() => {})
     } else {
       ringReset(true)
     }

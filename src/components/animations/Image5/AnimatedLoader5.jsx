@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './AnimatedLoader5.css'
 
 export default function AnimatedLoader5({ finalImage = `${import.meta.env.BASE_URL}images/cat5.jpg`, onFinish }) {
@@ -6,8 +6,14 @@ export default function AnimatedLoader5({ finalImage = `${import.meta.env.BASE_U
   const [autoPhase, setAutoPhase] = useState(false)
   const [showFinal, setShowFinal] = useState(false)
 
+  const soundRef = useRef(null)
+
   const inputSequence = ['w', 'o', 'r', 'k']
   const imageSequence = ['start', 'w', 'o', 'r', 'k', '1', '2']
+
+  useEffect(() => {
+    soundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/sound5.wav`)
+  }, [])
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -25,7 +31,10 @@ export default function AnimatedLoader5({ finalImage = `${import.meta.env.BASE_U
   useEffect(() => {
     if (currentIndex === 4) {
       setAutoPhase(true)
-      setTimeout(() => setCurrentIndex(5), 400) // k → 1.jpg
+      setTimeout(() => {
+        setCurrentIndex(5)
+        soundRef.current?.play().catch(() => {})
+      }, 400) // k → 1.jpg
       setTimeout(() => setCurrentIndex(6), 650) // 1.jpg → 2.jpg
       setTimeout(() => {
         setShowFinal(true)

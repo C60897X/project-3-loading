@@ -13,7 +13,7 @@ export default function Gallery() {
         <div className="about" onClick={() => setShowColophon(!showColophon)}>About</div>
         <div className={`colophon ${showColophon ? 'visible' : 'hidden'}`}>
           This project is a memoir of my cats, to whom I became allergic of and had to send to my friend. Photo credit: me and my friend. <br />
-          This project is created by Celina Xie at Washington University in St. Louis, for Advanced Interaction Design in the Communication Design program at the Sam Fox School of Design & Visual Arts, spring 2025. Fonts used are Cabin Sketch designed by Impallari Type and Delius by Natalia Raices. All illustrations were done by Celina.
+          This project is created by Celina Xie at Washington University in St. Louis, for Advanced Interaction Design in the Communication Design program at the Sam Fox School of Design & Visual Arts, spring 2025. Fonts used are Cabin Sketch designed by Impallari Type and Delius by Natalia Raices. All illustrations were done by Celina. Sound credit: freesound.org
         </div>
 
         <div className="frame thumb-1">
