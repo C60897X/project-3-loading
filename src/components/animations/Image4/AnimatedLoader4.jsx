@@ -3,13 +3,14 @@ import './AnimatedLoader4.css'
 
 export default function AnimatedLoader4({ finalImage = `${import.meta.env.BASE_URL}images/cat4.jpg`, onFinish }) {
   const [position, setPosition] = useState({ x: 0, y: 0 })
-  const [direction, setDirection] = useState(null)
+  const [direction, setDirection] = useState(null) // 'right' | 'down'
   const [frameIndex, setFrameIndex] = useState(0)
   const [isPressed, setIsPressed] = useState(false)
   const [showFinal, setShowFinal] = useState(false)
 
   const intervalRef = useRef(null)
   const containerRef = useRef(null)
+  const moveSound = useRef(null)
 
   const rightFrames = [
     `${import.meta.env.BASE_URL}images/4/right1.png`,
@@ -22,8 +23,14 @@ export default function AnimatedLoader4({ finalImage = `${import.meta.env.BASE_U
 
   const maxX = 450
   const maxY = 220
-  const moveSpeed = 10
-  const frameSpeed = 200
+
+  const moveSpeed = 10 // px per tick
+  const frameSpeed = 200 // ms per frame
+
+  useEffect(() => {
+    moveSound.current = new Audio(`${import.meta.env.BASE_URL}sounds/sound4.wav`)
+    moveSound.current.loop = true
+  }, [])
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -54,7 +61,8 @@ export default function AnimatedLoader4({ finalImage = `${import.meta.env.BASE_U
   }, [position, showFinal])
 
   useEffect(() => {
-    if (isPressed && direction) {
+    if (isPressed && direction && (position.x < maxX || position.y < maxY)) {
+      moveSound.current.play().catch(() => {})
       intervalRef.current = setInterval(() => {
         setFrameIndex((prev) => (prev + 1) % 2)
         setPosition((prev) => {
@@ -66,12 +74,19 @@ export default function AnimatedLoader4({ finalImage = `${import.meta.env.BASE_U
       }, frameSpeed)
     } else {
       clearInterval(intervalRef.current)
+      intervalRef.current = null
+      moveSound.current && moveSound.current.pause()
     }
-    return () => clearInterval(intervalRef.current)
-  }, [isPressed, direction])
+
+    return () => {
+      clearInterval(intervalRef.current)
+      moveSound.current && moveSound.current.pause()
+    }
+  }, [isPressed, direction, position])
 
   useEffect(() => {
     if (position.x >= maxX && position.y >= maxY) {
+      moveSound.current && moveSound.current.pause()
       setTimeout(() => setShowFinal(true), 300)
     }
   }, [position])
@@ -104,8 +119,7 @@ export default function AnimatedLoader4({ finalImage = `${import.meta.env.BASE_U
           <div
             ref={containerRef}
             className="move-box"
-            style={{ width: '200px', height: '200px', transform: `translate(${position.x}px, ${position.y}px)` }}
-          >
+            style={{ width: '200px', height: '200px', transform: `translate(${position.x}px, ${position.y}px)` }}>
             {showRing && <div className="interaction-ring-4 pulse-4"></div>}
             <img src={currentFrame} alt="frame" className="frame-img" />
           </div>
