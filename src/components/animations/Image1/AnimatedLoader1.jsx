@@ -7,8 +7,15 @@ export default function AnimatedLoader1({ frameFolder, finalImage, onFinish }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [finished, setFinished] = useState(false)
   const intervalRef = useRef(null)
+  const soundRef = useRef(null)
 
-  // 自动侦测帧数（.jpg）
+  // 初始化音效
+  useEffect(() => {
+    soundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/sound1.wav`)
+    soundRef.current.loop = true
+  }, [])
+
+  // 自動偵測幀數
   useEffect(() => {
     let index = 1
     const testImage = () => {
@@ -25,9 +32,10 @@ export default function AnimatedLoader1({ frameFolder, finalImage, onFinish }) {
     testImage()
   }, [frameFolder])
 
-  // 播放控制逻辑（最后一帧额外停留1秒）
+  // 播放控制邏輯
   useEffect(() => {
     if (isPlaying && !finished && totalFrames > 0) {
+      soundRef.current?.play().catch(() => {})
       intervalRef.current = setInterval(() => {
         setCurrentFrame((prev) => {
           if (prev < totalFrames - 1) {
@@ -37,11 +45,12 @@ export default function AnimatedLoader1({ frameFolder, finalImage, onFinish }) {
             setCurrentFrame(totalFrames)
 
             setTimeout(() => {
+              soundRef.current?.pause()
               setFinished(true)
               setTimeout(() => {
                 if (onFinish) onFinish()
-              }, 1000) // 猫图停留 2 秒
-            }, 500) // 最后一帧停留 1 秒
+              }, 1000)
+            }, 500)
 
             return prev
           } else {
@@ -49,14 +58,19 @@ export default function AnimatedLoader1({ frameFolder, finalImage, onFinish }) {
           }
         })
       }, 150)
+    } else {
+      clearInterval(intervalRef.current)
+      soundRef.current?.pause()
     }
 
-    return () => clearInterval(intervalRef.current)
+    return () => {
+      clearInterval(intervalRef.current)
+      soundRef.current?.pause()
+    }
   }, [isPlaying, finished, totalFrames, onFinish])
 
   return (
     <div className="animation-container">
-      {/* 提示文字 */}
       {!finished && <div className="prompt-text">Hold Down on Food Bag</div>}
 
       {!finished && (
@@ -67,15 +81,18 @@ export default function AnimatedLoader1({ frameFolder, finalImage, onFinish }) {
             onMouseUp={() => {
               setIsPlaying(false)
               clearInterval(intervalRef.current)
+              soundRef.current?.pause()
+            }}
+            onMouseLeave={() => {
+              setIsPlaying(false)
+              clearInterval(intervalRef.current)
+              soundRef.current?.pause()
             }}
           ></div>
-
-          {/* ⬇️ only show ring when NOT pressing */}
           {!isPlaying && <div className="interaction-ring-1"></div>}
         </>
       )}
 
-      {/* 帧图 */}
       {!finished &&
         Array.from({ length: totalFrames }).map((_, i) => (
           <img
@@ -91,10 +108,8 @@ export default function AnimatedLoader1({ frameFolder, finalImage, onFinish }) {
           />
         ))}
 
-      {/* 猫图 */}
       {finished && (
         <>
-          {/* Last frame stays visible during transition */}
           <img
             src={`${import.meta.env.BASE_URL}images/${frameFolder}/${totalFrames}.jpg`}
             className="animated-image"
@@ -106,7 +121,6 @@ export default function AnimatedLoader1({ frameFolder, finalImage, onFinish }) {
             alt="last frame"
           />
 
-          {/* Final cat image fades in */}
           <img
             src={finalImage}
             className="animated-image"

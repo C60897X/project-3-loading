@@ -8,8 +8,15 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
   const [finished, setFinished] = useState(false)
   const [hideRing, setHideRing] = useState(false)
   const intervalRef = useRef(null)
+  const soundRef = useRef(null)
 
-  // 自动侦测帧数（.jpg）
+  // 初始化音效
+  useEffect(() => {
+    soundRef.current = new Audio(`${import.meta.env.BASE_URL}sounds/sound2.wav`)
+    soundRef.current.loop = true
+  }, [])
+
+  // 自動偵測幀數
   useEffect(() => {
     let index = 1
     const testImage = () => {
@@ -26,9 +33,10 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
     testImage()
   }, [frameFolder])
 
-  // 播放控制逻辑
+  // 播放控制邏輯
   useEffect(() => {
     if (started && !finished && totalFrames > 0) {
+      soundRef.current?.play().catch(() => {})
       intervalRef.current = setInterval(() => {
         setCurrentFrame((prev) => {
           if (prev < totalFrames - 1) {
@@ -38,11 +46,12 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
             setCurrentFrame(totalFrames)
 
             setTimeout(() => {
+              soundRef.current?.pause()
               setFinished(true)
               setTimeout(() => {
                 if (onFinish) onFinish()
               }, 2000)
-            }, 500) // 最后一帧停留 0.5 秒
+            }, 500)
             return prev
           } else {
             return prev
@@ -51,17 +60,18 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
       }, 150)
     }
 
-    return () => clearInterval(intervalRef.current)
+    return () => {
+      clearInterval(intervalRef.current)
+      soundRef.current?.pause()
+    }
   }, [started, finished, totalFrames, onFinish])
 
   return (
     <div className="animation-container">
-      {/* 提示文字 */}
       {!started && !finished && (
         <div className="prompt-text">Click on Blue Ring</div>
       )}
 
-      {/* 隐形按钮 + 可视化提示圈 */}
       {!started && !finished && (
         <>
           <button
@@ -70,15 +80,11 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
               setStarted(true)
               setHideRing(true)
             }}
-          >
-            {/* Invisible button */}
-          </button>
-
+          ></button>
           <div className={`interaction-ring-2 ${hideRing ? 'fade-out' : ''}`}></div>
         </>
       )}
 
-      {/* 帧图 */}
       {started && !finished &&
         Array.from({ length: totalFrames }).map((_, i) => (
           <img
@@ -94,7 +100,6 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
           />
         ))}
 
-      {/* 猫图淡入 + 最后一帧淡出 */}
       {finished && (
         <>
           <img
@@ -122,4 +127,4 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
       )}
     </div>
   )
-}
+} 
