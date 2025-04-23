@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './AnimatedLoader5.css'
 
-export default function AnimatedLoader5({ finalImage = '/images/cat5.jpg', onFinish }) {
+export default function AnimatedLoader5({ finalImage = `${import.meta.env.BASE_URL}images/cat5.jpg`, onFinish }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [autoPhase, setAutoPhase] = useState(false)
   const [showFinal, setShowFinal] = useState(false)
@@ -41,7 +41,7 @@ export default function AnimatedLoader5({ finalImage = '/images/cat5.jpg', onFin
           {imageSequence.map((name, index) => (
             <img
               key={name}
-              src={`/images/5/${name}.jpg`}
+              src={`${import.meta.env.BASE_URL}images/5/${name}.jpg`}
               alt={name}
               className={`frame-img5 ${currentIndex === index ? 'visible' : 'hidden'}`}
             />

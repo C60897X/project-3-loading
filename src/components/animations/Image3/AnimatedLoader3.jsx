@@ -25,7 +25,6 @@ export default function AnimatedLoader3({ finalImage, onFinish }) {
   }, [leftLocked, rightLocked, onFinish])
 
   const handleMouseDown = (side, e) => {
-    console.log('mousedown on', side)
     e.preventDefault()
     if ((side === 'left' && leftLocked) || (side === 'right' && rightLocked)) return
 
@@ -82,8 +81,6 @@ export default function AnimatedLoader3({ finalImage, onFinish }) {
       elCenterY <= zoneY + zoneHeight
 
     if (inZone) {
-      console.log('handleMouseUp:', dragging?.side, inZone)
-
       el.classList.add('locked')
       lockSetter(true)
       ringReset(false)
@@ -117,7 +114,7 @@ export default function AnimatedLoader3({ finalImage, onFinish }) {
         }}
       >
         {!leftLocked && showLeftRing && <div className="interaction-ring-3 ring-left-3 pulse-3"></div>}
-        <img src="/images/3/left.png" alt="left" draggable={false} />
+        <img src={`${import.meta.env.BASE_URL}images/3/left.png`} alt="left" draggable={false} />
       </div>
 
       <div
@@ -128,7 +125,7 @@ export default function AnimatedLoader3({ finalImage, onFinish }) {
         }}
       >
         {!rightLocked && showRightRing && <div className="interaction-ring-3 ring-right-3 pulse-3"></div>}
-        <img src="/images/3/right.png" alt="right" draggable={false} />
+        <img src={`${import.meta.env.BASE_URL}images/3/right.png`} alt="right" draggable={false} />
       </div>
 
       {leftLocked && rightLocked && (

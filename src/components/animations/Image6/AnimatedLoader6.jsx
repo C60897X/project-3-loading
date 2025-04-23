@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './AnimatedLoader6.css'
 
-export default function AnimatedLoader6({ finalImage = '/images/cat6.jpg', onFinish }) {
+export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_URL}images/cat6.jpg`, onFinish }) {
   const frameCount = 10
   const frameDuration = 150 // ms
   const [frameIndex, setFrameIndex] = useState(0)
@@ -59,7 +59,7 @@ export default function AnimatedLoader6({ finalImage = '/images/cat6.jpg', onFin
       {/* 当前帧图像 */}
       {!showFinal && (
         <img
-          src={`/images/6/${frameIndex + 1}.jpg`}
+          src={`${import.meta.env.BASE_URL}images/6/${frameIndex + 1}.jpg`}
           alt={`frame ${frameIndex + 1}`}
           className="animated-image"
           style={{
@@ -74,7 +74,7 @@ export default function AnimatedLoader6({ finalImage = '/images/cat6.jpg', onFin
       {!showFinal && (
         <>
           <img
-            src="/images/6/mouse6.png"
+            src={`${import.meta.env.BASE_URL}images/6/mouse6.png`}
             alt="custom cursor"
             className="custom-cursor"
             style={{

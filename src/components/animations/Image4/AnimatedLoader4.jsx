@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import './AnimatedLoader4.css'
 
-export default function AnimatedLoader4({ finalImage = '/images/cat4.jpg', onFinish }) {
+export default function AnimatedLoader4({ finalImage = `${import.meta.env.BASE_URL}images/cat4.jpg`, onFinish }) {
   const [position, setPosition] = useState({ x: 0, y: 0 })
-  const [direction, setDirection] = useState(null) // 'right' | 'down'
+  const [direction, setDirection] = useState(null)
   const [frameIndex, setFrameIndex] = useState(0)
   const [isPressed, setIsPressed] = useState(false)
   const [showFinal, setShowFinal] = useState(false)
@@ -11,14 +11,19 @@ export default function AnimatedLoader4({ finalImage = '/images/cat4.jpg', onFin
   const intervalRef = useRef(null)
   const containerRef = useRef(null)
 
-  const rightFrames = ['/images/4/right1.png', '/images/4/right2.png']
-  const downFrames = ['/images/4/down1.png', '/images/4/down2.png']
+  const rightFrames = [
+    `${import.meta.env.BASE_URL}images/4/right1.png`,
+    `${import.meta.env.BASE_URL}images/4/right2.png`
+  ]
+  const downFrames = [
+    `${import.meta.env.BASE_URL}images/4/down1.png`,
+    `${import.meta.env.BASE_URL}images/4/down2.png`
+  ]
 
   const maxX = 450
   const maxY = 220
-
-  const moveSpeed = 10 // px per tick
-  const frameSpeed = 200 // ms per frame
+  const moveSpeed = 10
+  const frameSpeed = 200
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -77,15 +82,13 @@ export default function AnimatedLoader4({ finalImage = '/images/cat4.jpg', onFin
     } else if (direction === 'right') {
       return rightFrames[frameIndex % rightFrames.length]
     } else {
-      // 当没有按键按下时，根据位置判断停在的方向帧
       if (position.x >= maxX && position.y < maxY) {
-        return downFrames[0] // 停在下移起始帧
+        return downFrames[0]
       } else {
-        return rightFrames[0] // 停在右移起始帧
+        return rightFrames[0]
       }
     }
   })()
-  
 
   const showRing = !isPressed && !showFinal && (position.x < maxX || position.y < maxY)
 
@@ -94,14 +97,15 @@ export default function AnimatedLoader4({ finalImage = '/images/cat4.jpg', onFin
       {!showFinal && (
         <>
           <img
-            src="/images/4/destination.png"
+            src={`${import.meta.env.BASE_URL}images/4/destination.png`}
             alt="destination"
             className="destination-marker"
           />
           <div
             ref={containerRef}
             className="move-box"
-            style={{ width: '200px', height: '200px', transform: `translate(${position.x}px, ${position.y}px)` }}>
+            style={{ width: '200px', height: '200px', transform: `translate(${position.x}px, ${position.y}px)` }}
+          >
             {showRing && <div className="interaction-ring-4 pulse-4"></div>}
             <img src={currentFrame} alt="frame" className="frame-img" />
           </div>

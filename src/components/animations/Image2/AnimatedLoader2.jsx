@@ -14,7 +14,7 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
     let index = 1
     const testImage = () => {
       const img = new Image()
-      img.src = `/images/${frameFolder}/${index}.jpg`
+      img.src = `${import.meta.env.BASE_URL}images/${frameFolder}/${index}.jpg`
       img.onload = () => {
         index++
         testImage()
@@ -83,7 +83,7 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
         Array.from({ length: totalFrames }).map((_, i) => (
           <img
             key={i}
-            src={`/images/${frameFolder}/${i + 1}.jpg`}
+            src={`${import.meta.env.BASE_URL}images/${frameFolder}/${i + 1}.jpg`}
             className="animated-image"
             style={{
               opacity: currentFrame === i + 1 ? 1 : 0,
@@ -98,7 +98,7 @@ export default function AnimatedLoader2({ frameFolder, finalImage, onFinish }) {
       {finished && (
         <>
           <img
-            src={`/images/${frameFolder}/${totalFrames}.jpg`}
+            src={`${import.meta.env.BASE_URL}images/${frameFolder}/${totalFrames}.jpg`}
             className="animated-image"
             style={{
               opacity: 0,
