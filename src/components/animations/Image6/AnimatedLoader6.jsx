@@ -3,12 +3,13 @@ import './AnimatedLoader6.css'
 
 export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_URL}images/cat6.jpg`, onFinish }) {
   const frameCount = 10
-  const frameDuration = 150 // ms
+  const frameDuration = 150 // 每帧间隔时间
   const [frameIndex, setFrameIndex] = useState(0)
   const [isMoving, setIsMoving] = useState(false)
   const [showFinal, setShowFinal] = useState(false)
   const [hideUI, setHideUI] = useState(false)
   const [cursorPos, setCursorPos] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+
   const animationInterval = useRef(null)
   const stopTimeout = useRef(null)
   const soundRef = useRef(null)
@@ -27,11 +28,12 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
       clearTimeout(stopTimeout.current)
       stopTimeout.current = setTimeout(() => setIsMoving(false), 200)
     }
+
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // 控制逐帧动画和音效播放
+  // 控制逐帧动画 + 声音
   useEffect(() => {
     if (isMoving && frameIndex < frameCount - 1 && !showFinal) {
       soundRef.current?.play().catch(() => {})
@@ -50,13 +52,14 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
       animationInterval.current = null
       soundRef.current?.pause()
     }
+
     return () => {
       clearInterval(animationInterval.current)
       soundRef.current?.pause()
     }
   }, [isMoving, frameIndex, showFinal])
 
-  // 最后一帧后触发 UI 隐藏和猫图显示
+  // 动画结束后淡出 UI 并淡入猫图
   useEffect(() => {
     if (frameIndex === frameCount - 1 && !showFinal) {
       setHideUI(true)
@@ -134,3 +137,4 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
     </div>
   )
 }
+
