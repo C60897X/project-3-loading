@@ -1,5 +1,5 @@
 {
-  "homepage": "https://yourusername.github.io/project-3-loading",
+  "homepage": "https://c60897x.github.io/project-3-loading",
   "name": "project-3-loading",
   "private": true,
   "version": "0.0.0",
@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "framer-motion": "^12.7.3",

@@ -5,13 +5,13 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
   const frameCount = 10
   const frameDuration = 150 // ms
   const [frameIndex, setFrameIndex] = useState(0)
-  const [isMoving, setIsMoving] = useState(false)
   const [showFinal, setShowFinal] = useState(false)
   const [hideUI, setHideUI] = useState(false)
   const [cursorPos, setCursorPos] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
   const animationInterval = useRef(null)
   const stopTimeout = useRef(null)
   const soundRef = useRef(null)
+  const lastMousePos = useRef({ x: 0, y: 0 })
 
   // 初始化音效
   useEffect(() => {
@@ -19,42 +19,29 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
     soundRef.current.loop = true
   }, [])
 
-  // 监听鼠标移动
+  // 监听鼠标移动并播放动画
   useEffect(() => {
     const handleMouseMove = (e) => {
+      const dx = Math.abs(e.clientX - lastMousePos.current.x)
+      const dy = Math.abs(e.clientY - lastMousePos.current.y)
+
       setCursorPos({ x: e.clientX, y: e.clientY })
-      setIsMoving(true)
-      clearTimeout(stopTimeout.current)
-      stopTimeout.current = setTimeout(() => setIsMoving(false), 200)
+      lastMousePos.current = { x: e.clientX, y: e.clientY }
+
+      if ((dx > 2 || dy > 2) && frameIndex < frameCount - 1 && !showFinal) {
+        setFrameIndex((prev) => {
+          if (prev < frameCount - 1) return prev + 1
+          return prev
+        })
+        soundRef.current?.play().catch(() => {})
+        clearTimeout(stopTimeout.current)
+        stopTimeout.current = setTimeout(() => soundRef.current?.pause(), 300)
+      }
     }
+
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
-  // 控制逐帧动画和音效播放
-  useEffect(() => {
-    if (isMoving && frameIndex < frameCount - 1 && !showFinal) {
-      soundRef.current?.play().catch(() => {})
-      if (!animationInterval.current) {
-        animationInterval.current = setInterval(() => {
-          setFrameIndex((prev) => {
-            if (prev < frameCount - 1) return prev + 1
-            clearInterval(animationInterval.current)
-            animationInterval.current = null
-            return prev
-          })
-        }, frameDuration)
-      }
-    } else {
-      clearInterval(animationInterval.current)
-      animationInterval.current = null
-      soundRef.current?.pause()
-    }
-    return () => {
-      clearInterval(animationInterval.current)
-      soundRef.current?.pause()
-    }
-  }, [isMoving, frameIndex, showFinal])
+  }, [frameIndex, showFinal])
 
   // 最后一帧后触发 UI 隐藏和猫图显示
   useEffect(() => {
@@ -105,7 +92,7 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
           >
             Move mouse around
           </div>
-          {!isMoving && (
+          {frameIndex < frameCount - 1 && (
             <div
               className="interaction-ring-6 pulse-6"
               style={{
