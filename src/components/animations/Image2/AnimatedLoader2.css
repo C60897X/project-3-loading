@@ -1,0 +1,95 @@
+.animation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .animated-image {
+    width: 70vh;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    display: block;
+    position: absolute;
+  }
+  
+  .click-button {
+    position: absolute;
+    height: 100px;
+    width: 70px;
+    top: 27%;
+    left: 20%;
+    transform: translateX(-50%);
+    z-index: 999;
+    background: none;
+    border: none;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .interaction-ring-2 {
+    position: absolute;
+    top: 27%;
+    left: 20%;
+    transform: translate(-50%, 0%);
+    width: 36px;
+    height: 36px;
+    border: 12px solid rgba(100, 149, 237, 0.7); /* 浅蓝色 + opacity */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: pulse-2 2.5s ease-in-out infinite;
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+  
+  .interaction-ring-2.fade-out {
+    opacity: 0;
+  }  
+  
+  .prompt-text {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    color: rgb(19, 91, 225);
+    z-index: 1000;
+    white-space: nowrap;
+    font-family: 'Delius';
+  }
+  
+  @keyframes fade-out-frame {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes fade-in-cat {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes pulse-2 {
+    0% {
+      transform: translateX(-50%) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateX(-50%) scale(1.1);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translateX(-50%) scale(1);
+      opacity: 0.6;
+    }
+  }

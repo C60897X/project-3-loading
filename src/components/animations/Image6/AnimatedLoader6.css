@@ -1,0 +1,76 @@
+.animation-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 所有关键图片通用样式 */
+  .animated-image {
+    width: 70vh;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    display: block;
+    position: absolute;
+  }
+  
+  /* 猫图淡入动画 */
+  @keyframes fade-in-cat-6 {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* 鼠标图片 */
+  .custom-cursor {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  /* 提示文字 */
+  .prompt-text-6 {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(196, 0, 46);
+    font-family: 'Delius';
+    z-index: 3;
+  }
+  
+  /* ring + pulse */
+  .interaction-ring-6 {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border: 10px solid rgba(255, 170, 190, 0.7);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9;
+    animation: pulse-6 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-6 {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1);
+      opacity: 0.3;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+  }
+  

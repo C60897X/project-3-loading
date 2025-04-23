@@ -1,0 +1,113 @@
+.animation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 移动的方形容器 */
+  .move-box {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.02s linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* 图片自动铺满 container */
+  .frame-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+  }
+  
+  /* 显示猫图 */
+
+  .animated-image {
+    width: 70vh;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    display: block;
+    position: absolute;
+  }
+  
+  /* 淡入效果 */
+  .fade-in-4 {
+    animation: fadeInOpacity4 2s ease-in forwards;
+    opacity: 0;
+  }
+  
+  @keyframes fadeInOpacity4 {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* 提示文字 */
+  .prompt-text-4 {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(90, 45, 150);
+    font-family: 'Delius';
+  }
+  
+  /* 淡紫色 pulsating interaction ring */
+  .interaction-ring-4 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 36px;
+    height: 36px;
+    border: 10px solid rgba(175, 142, 255, 0.7); /* 淡紫色 */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 5;
+    animation: pulse-4 2.2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-4 {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1);
+      opacity: 0.3;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+  }
+  
+  .destination-marker {
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    left: 55%;
+    top: 55%;
+    /* transform: translate(-50%, -50%); */
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .destination-marker.fade-out-fast {
+    opacity: 0;
+  }
+  

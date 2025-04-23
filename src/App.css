@@ -1,0 +1,201 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(255, 235, 190);
+}
+
+h1 {
+  font-family: "Londrina Sketch", sans-serif;
+  font-size: 2.5rem;
+  color: rgb(212, 109, 0);
+  margin-top: 30px;
+  width: 100%;
+  text-align: center;
+}
+
+/* 每个 thumbnail 的整体容器 */
+.frame {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  padding: 10px;
+  background: rgb(250, 254, 255);
+  border: 2px solid rgb(255, 126, 20);
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 4px 8px rgba(38, 8, 1, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* hover 放大整体 frame */
+.frame:hover {
+  transform: scale(1.05);
+}
+
+/* 缩略图图片 */
+.frame img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* 钉子小洞 */
+.frame::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgb(221, 92, 0);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.gallery {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto; /*简单滚动*/
+  /* padding: 20px; */
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/background_pattern.png');
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  overflow: hidden;
+}
+
+.gallery img {
+  width: 130px;
+  height: 130px;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  border-radius: 10px;
+  position: static;
+}
+
+.about {
+  width: 100px;
+  height: 50px;
+  padding: 10px;
+  background-color: rgb(250, 254, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Londrina Sketch", sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
+  left: 2%;
+  bottom: 3%;
+  border: 5px double rgb(255, 126, 20);
+  color: rgb(224, 101, 0);
+  transition: all 0.3s;
+}
+
+.about:hover {
+  width: 103px;
+  height: 52px;
+  cursor: pointer;
+  left: 1.8%;
+  bottom: 2.8%;
+}
+
+.colophon {
+  font-family: "Delius";
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: 3%;
+  left: 12%;
+  width: 70%;
+  text-align: left;
+  color: rgb(182, 67, 0);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.colophon.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.colophon.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+.thumb-1 {
+  top: 10%;
+  left: 7%;
+}
+
+.thumb-2 {
+  top: 20%;
+  left: 35%;
+}
+
+.thumb-3 {
+  top: 15%;
+  left: 75%;
+}
+
+.thumb-4 {
+  top: 40%;
+  left: 59%;
+}
+
+.thumb-5 {
+  top: 60%;
+  left: 30%;
+}
+
+.thumb-6 {
+  top: 65%;
+  left: 80%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center; justify-content: center;
+}
+
+.overlay-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px; right: 10px;
+  cursor: pointer;
+}
+
+.overlay-image {
+  max-height: 70vh;   /* 图片最大高度是viewport的80% */
+  max-width: 90vw;    /* 为了避免图片太宽超出viewport，可同时限制宽度 */
+  width: auto;        /* 让图片保持原始宽高比例 */
+  height: auto;
+  object-fit: contain; /* 保证图片完整显示，不会裁剪掉 */
+  border-radius: 8px;  /* 可选，美观 */
+}

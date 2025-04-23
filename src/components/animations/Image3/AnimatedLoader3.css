@@ -1,0 +1,147 @@
+.animation-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.animated-image {
+  width: 70vh;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  display: block;
+  position: absolute;
+}
+
+.left {
+  top: 30px;
+  left: 40px;
+  width: 200px;
+  aspect-ratio: 1 / 1;
+}
+
+.right {
+  top: 30px;
+  right: 40px;
+  width: 200px;
+  aspect-ratio: 1 / 1;
+}
+
+.fade-in-3 {
+  animation: fadeInOpacity 2.5s ease-in forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInOpacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* draggable container 代替 .draggable */
+.draggable-container {
+  position: absolute;
+  width: 200px;
+  aspect-ratio: 1 / 1;
+  cursor: grab;
+  z-index: 10;
+  user-select: none;
+}
+
+.draggable-container.locked {
+  cursor: default;
+  pointer-events: none;
+}
+
+.draggable-container.left {
+  top: 30px;
+  left: 40px;
+}
+
+.draggable-container.right {
+  top: 30px;
+  right: 40px;
+}
+
+.draggable-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ring 内部定位 - 相对于 container */
+.interaction-ring-3 {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border: 10px solid rgba(100, 149, 237, 0.6);
+  border-radius: 50%;
+  z-index: 20;
+  pointer-events: none;
+  animation: pulse-3 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-3 {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+}
+
+/* 目标区域 */
+.drop-zone {
+  position: absolute;
+  width: 150px;
+  height: 200px;
+  border: 2px dashed rgba(100, 149, 237, 0.5);
+  border-radius: 12px;
+  z-index: 1;
+}
+
+.left-zone {
+  bottom: 200px;
+  left: 200px;
+}
+
+.right-zone {
+  bottom: 200px;
+  right: 200px;
+}
+
+.ring-right-3 {
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ring-left-3 {
+  left: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fade-out-fast-3 {
+  animation: fadeOutFast 0.1s ease-out forwards;
+}
+
+@keyframes fadeOutFast {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,94 @@
+.animation-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 所有逐帧图片共用样式 */
+  .frame-img5 {
+    position: absolute;
+    width: 70vh;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+  
+  .frame-img5.visible {
+    opacity: 1;
+    z-index: 2;
+  }
+  
+  .frame-img5.hidden {
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  /* 猫图淡入 */
+  .animated-image {
+    width: 70vh;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    display: block;
+    position: absolute;
+  }
+  
+  .fade-in-5 {
+    animation: fadeInOpacity 2s ease-in forwards;
+  }
+  
+  @keyframes fadeInOpacity {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* 提示文本 */
+  .prompt-text-5 {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(90, 45, 150);
+    font-family: 'Delius';
+    z-index: 3;
+  }
+  
+  /* interaction ring for typing */
+  .interaction-ring-5 {
+    position: absolute;
+    top: 34%;
+    left: 50%;
+    width: 36px;
+    height: 36px;
+    border: 10px solid rgba(175, 142, 255, 0.7); /* 淡紫色 */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+    animation: pulse-5 2.2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-5 {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1);
+      opacity: 0.3;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+  }
+  
