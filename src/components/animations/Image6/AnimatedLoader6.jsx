@@ -8,7 +8,7 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
   const [showFinal, setShowFinal] = useState(false)
   const [hideUI, setHideUI] = useState(false)
   const [cursorPos, setCursorPos] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
-  const animationTimeout = useRef(null)
+  const [isMoving, setIsMoving] = useState(false)
   const stopTimeout = useRef(null)
   const soundRef = useRef(null)
   const lastMousePos = useRef({ x: 0, y: 0 })
@@ -30,12 +30,17 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
       lastMousePos.current = { x: e.clientX, y: e.clientY }
 
       const now = Date.now()
-      if ((dx > 1 || dy > 1) && now - lastFrameTime.current >= frameDuration && frameIndex < frameCount - 1 && !showFinal) {
-        lastFrameTime.current = now
-        setFrameIndex((prev) => Math.min(prev + 1, frameCount - 1))
-        soundRef.current?.play().catch(() => {})
+      const shouldAdvance = (dx > 1 || dy > 1) && now - lastFrameTime.current >= frameDuration
+
+      if (!showFinal) {
+        setIsMoving(dx > 1 || dy > 1)
+        if (shouldAdvance && frameIndex < frameCount - 1) {
+          lastFrameTime.current = now
+          setFrameIndex((prev) => Math.min(prev + 1, frameCount - 1))
+          soundRef.current?.play().catch(() => {})
+        }
         clearTimeout(stopTimeout.current)
-        stopTimeout.current = setTimeout(() => soundRef.current?.pause(), 300)
+        stopTimeout.current = setTimeout(() => setIsMoving(false), 300)
       }
     }
 
@@ -92,7 +97,7 @@ export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_U
           >
             Move mouse around
           </div>
-          {frameIndex < frameCount - 1 && (
+          {!isMoving && frameIndex < frameCount - 1 && (
             <div
               className="interaction-ring-6 pulse-6"
               style={{
