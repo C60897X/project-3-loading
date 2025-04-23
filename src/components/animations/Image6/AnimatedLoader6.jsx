@@ -3,7 +3,7 @@ import './AnimatedLoader6.css'
 
 export default function AnimatedLoader6({ finalImage = `${import.meta.env.BASE_URL}images/cat6.jpg`, onFinish }) {
   const frameCount = 10
-  const frameDuration = 200 // ⬅️ 从 150ms 改为 200ms
+  const frameDuration = 500 // ⬅️ 改为 500ms
   const [frameIndex, setFrameIndex] = useState(0)
   const [showFinal, setShowFinal] = useState(false)
   const [hideUI, setHideUI] = useState(false)
